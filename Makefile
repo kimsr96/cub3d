@@ -5,7 +5,8 @@ LIBFT = -Llibft -lft
 SRCS =  srcs/main.c \
 		srcs/parsing/read_map.c \
 		srcs/parsing/utils.c \
-		srcs/parsing/parsing_file.c
+		srcs/parsing/parsing_file.c \
+		srcs/parsing/get_hex_color.c
 OBJS = $(SRCS:.c=.o)
 INCS = ./includes
 NAME = cub3D

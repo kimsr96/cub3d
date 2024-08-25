@@ -6,11 +6,11 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:32:03 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/24 18:30:10 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/25 16:02:43 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
+#include "cub3d.h"
 
 static void	check_type(char *file_name)
 {

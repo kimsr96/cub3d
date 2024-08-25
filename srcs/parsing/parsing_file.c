@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:45:49 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/25 15:58:48 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/25 16:42:33 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,29 @@ void	valid_identifier(char *line, int idx)
 	}
 }
 
-void	is_valid_wall_texture(t_game *g)
+void	insert_info(t_game *g)
 {
 	int		i;
+	char	**color_2d;
 
 	i = 0;
 	while (i < 6)
 	{
 		if (i < 4)
 			g->asset.walls[i] = path2img(g->mlx, g->asset.split_line[i][1]);
+		else if (i == 4)
+		{
+			printf("here\n");
+			color_2d = ft_split(g->asset.split_line[4][1], ',');
+			g->asset.floor = int_to_hex_color(color_2d);
+		}
+		else if (i == 5)
+		{
+			color_2d = ft_split(g->asset.split_line[5][1], ',');
+			g->asset.ceiling = int_to_hex_color(color_2d);
+		}
 		i++;
 	}
-	g->asset.floor = g->asset.split_line[4][1];
-	g->asset.ceiling = g->asset.split_line[5][1];
 }
 
 int	get_parsing_line(t_game *g, char *line)
@@ -127,6 +137,8 @@ void	print_identifier(t_game *g)
 		printf("path: %s\n", g->asset.split_line[i][1]);
 		i++;
 	}
+	printf("floor: %s\n", g->asset.floor);
+	printf("ceiling: %s\n", g->asset.ceiling);
 }
 
 void	print_map(t_game *g)
@@ -150,8 +162,9 @@ void	get_info(t_game *g, char *f_name)
 		error_msg();
 	get_identifier(g, fd);
 	get_map_info(g, fd);
-	//print_identifier(g);
 	//print_map(g);
 	close(fd);
-	is_valid_wall_texture(g);
+	insert_info(g);
+	print_identifier(g);
+	//is_valid_map(g);
 }

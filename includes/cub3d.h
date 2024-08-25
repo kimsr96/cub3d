@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/25 14:42:59 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/25 16:58:12 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct s_asset
 {
     char    ***split_line;
 	void	*walls[4];
-    char    *floor;
+    int		floor;
     char    *ceiling;
 }				t_asset;
 
@@ -57,4 +57,7 @@ void	get_info(t_game *g, char *f_name);
 /* utils.c */
 void	*path2img(void *mlx, char *path);
 void	error_msg(void);
+
+/* get_hex_color.c */
+char    *int_to_hex_color(char **color_2d);
 #endif
