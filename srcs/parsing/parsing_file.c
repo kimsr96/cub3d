@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:45:49 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/25 14:58:47 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/25 15:58:48 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,8 @@ void	get_info(t_game *g, char *f_name)
 		error_msg();
 	get_identifier(g, fd);
 	get_map_info(g, fd);
-	print_identifier(g);
-	print_map(g);
+	//print_identifier(g);
+	//print_map(g);
 	close(fd);
 	is_valid_wall_texture(g);
 }
