@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/27 18:03:41 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/27 21:24:37 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,19 @@ typedef struct s_game
 	//t_player	player;
 }				t_game;
 
+typedef struct s_player
+{
+	int	pos_x;
+	int	pos_y;
+	int	dir_x;
+	int	dir_y;
+}	t_player;
+
+// typedef struct s_draw
+// {
+
+// }	t_draw
+
 /* parsing_map.c */
 void	get_map_info(t_game *g, int fd, int *map_start);
 void	get_map(t_game *g, char *f_name, int map_start);
@@ -78,11 +91,5 @@ int		pass_line_before_map(char *f_name, int map_start);
 /* get_hex_color.c */
 char    *int_to_hex_color(char **color_2d);
 int		combine_color(char **color_2d);
+
 #endif
-
-
-//open
-//get texture
-//get combine_color
-//get s_map
-//close
