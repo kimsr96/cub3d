@@ -6,47 +6,50 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/25 16:01:26 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/25 16:54:43 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/26 20:10:08 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-char	*int_to_hex(int num)
+void	valid_color_format(char **color_2d)
 {
-	const char	*hex = "0123456789ABCDEF";
-	char		*ret;
-
-	ret = malloc(sizeof(char) * 3);
-	if (!ret)
-		exit (1);
-	ret[0] = hex[num / 16];
-	ret[1] = hex[num % 16];
-	ret[2] = '\0';
-	return (ret);
-}
-
-char    *int_to_hex_color(char **color_2d)
-{
-	int     i;
-	int     color_num;
-	char	*temp;
-	char	*hex_color;
+	int	i;
+	int	j;
 
 	i = 0;
-	temp = NULL;
-	hex_color = ft_calloc(11, sizeof(char));
-	ft_strlcat(hex_color, "0x00", 11);
+	if (!color_2d)
+		error_msg();
 	while (color_2d[i])
 	{
-		color_num = ft_atoi(color_2d[i]);
-		printf("color_num : %d\n", color_num);
-		if (color_num < 0 || color_num > 255)
-			error_msg();
-		temp = int_to_hex(color_num);
-		ft_strlcat(hex_color, temp, 11);
-		free(temp);
+		j = 0;
+		while (color_2d[i][j])
+		{
+			if (!ft_isdigit(color_2d[i][j]))
+				error_msg();
+			j++;
+		}
 		i++;
 	}
-	return (hex_color);
+	if (i != 3)
+		error_msg();
+}
+
+int	combine_color(char **color_2d)
+{
+	int	i;
+	int	rgb[3];
+	int	color;
+
+	i = 0;
+	valid_color_format(color_2d);
+	while (i < 3)
+	{
+		rgb[i] = ft_atoi(color_2d[i]);
+		if (rgb[i] > 255 || rgb[i] < 0)
+			error_msg();
+		i++;
+	}
+	color = (rgb[0] << 16 | rgb[1] << 8 | rgb[2]);
+	return (color);
 }

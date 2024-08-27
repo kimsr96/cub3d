@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:45:49 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/25 16:42:33 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:44:08 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	valid_identifier(char *line, int idx)
 	}
 }
 
-void	insert_info(t_game *g)
+void	insert_info(t_game *g, char ***split_line)
 {
 	int		i;
 	char	**color_2d;
@@ -38,40 +38,53 @@ void	insert_info(t_game *g)
 	while (i < 6)
 	{
 		if (i < 4)
-			g->asset.walls[i] = path2img(g->mlx, g->asset.split_line[i][1]);
+			g->asset.wall_texture[i] = path2img(g->mlx, split_line[i][1]);
 		else if (i == 4)
 		{
-			printf("here\n");
-			color_2d = ft_split(g->asset.split_line[4][1], ',');
-			g->asset.floor = int_to_hex_color(color_2d);
+			color_2d = ft_split(split_line[4][1], ',');
+			g->asset.floor_color = combine_color(color_2d);
 		}
 		else if (i == 5)
 		{
-			color_2d = ft_split(g->asset.split_line[5][1], ',');
-			g->asset.ceiling = int_to_hex_color(color_2d);
+			color_2d = ft_split(split_line[5][1], ',');
+			g->asset.ceiling_color = combine_color(color_2d);
 		}
 		i++;
 	}
 }
 
-int	get_parsing_line(t_game *g, char *line)
+void	count_comma(char *s)
+{
+	int	i;
+	int	cnt;
+
+	i = 0;
+	cnt = 0;
+	while (s[i])
+	{
+		if (s[i] == ',')
+			cnt++;
+		i++;
+	}
+	if (cnt != 2)
+		error_msg();
+}
+
+int	get_parsing_line(char ***split_line, char *line)
 {
 	int			i;
-	int			len;
 	const char	*id[6] = {"NO", "SO", "WE", "EA", "F", "C"};
 
 	i = 0;
 	while (i < 6)
 	{
-		if (i < 4)
-			len = 2;
-		else
-			len = 1;
 		if (ft_strnstr(line, id[i], ft_strlen(line)))
 		{
-			if (g->asset.split_line[i])
+			if (split_line[i])
 				error_msg();
-			g->asset.split_line[i] = ft_split2(line, "\x20\n");
+			split_line[i] = ft_split2(line, "\x20\n");
+			if (i >= 4)
+				count_comma(split_line[i][1]);
 			return (1);
 		}
 		i++;
@@ -79,28 +92,7 @@ int	get_parsing_line(t_game *g, char *line)
 	return (0);
 }
 
-void	get_map_info(t_game *g, int fd)
-{	
-	int		idx;
-	char	*line;
-	char	**map;
-
-	idx = 0;
-	map = malloc(sizeof(char *) * g->map.total_line);
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		if (ft_strlen(line) > 1)
-			map[idx++] = ft_strdup(line);
-		free(line);
-	}
-	map[idx] = NULL;
-	g->map.info = map;
-}
-
-void	get_identifier(t_game *g, int fd)
+void	get_texture(t_game *g, char ***split_line, int fd, int *map_start)
 {
 	int		i;
 	int		num;
@@ -108,63 +100,40 @@ void	get_identifier(t_game *g, int fd)
 
 	i = 0;
 	num = 0;
-	g->asset.split_line = malloc(sizeof(char **) * 6);
-	if (!g->asset.split_line)
-		exit(1);
-	ft_memset(g->asset.split_line, 0, sizeof(char **) * 6);
 	while (1)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			error_msg();
+		(*map_start)++;
 		if (ft_strlen(line) && num < 6)
-			num += get_parsing_line(g, ft_strdup(line));
+			num += get_parsing_line(split_line, ft_strdup(line));
 		free(line);
 		if (num == 6)
 			break ;
 	}
 	if (num != 6)
 		error_msg();
-}
-
-void	print_identifier(t_game *g)
-{
-	int	i;
-
-	i = 0;
-	while (i < 6)
-	{
-		printf("path: %s\n", g->asset.split_line[i][1]);
-		i++;
-	}
-	printf("floor: %s\n", g->asset.floor);
-	printf("ceiling: %s\n", g->asset.ceiling);
-}
-
-void	print_map(t_game *g)
-{
-	int	i;
-
-	i = 0;
-	while (g->map.info[i])
-	{
-		printf("%s", g->map.info[i]);
-		i++;
-	}
+	insert_info(g, split_line);
 }
 
 void	get_info(t_game *g, char *f_name)
 {
 	int		fd;
+	int		map_start;
+	char	***split_line;
 
+	map_start = 0;
+	split_line = malloc(sizeof(char **) * 6);
+	if (!split_line)
+		exit(1);
+	ft_memset(split_line, 0, sizeof(char **) * 6);
 	fd = open(f_name, O_RDONLY);
 	if (fd < 0)
 		error_msg();
-	get_identifier(g, fd);
-	get_map_info(g, fd);
-	//print_map(g);
+	get_texture(g, split_line, fd, &map_start);
+	get_map_info(g, fd, &map_start);
 	close(fd);
-	insert_info(g);
-	print_identifier(g);
-	//is_valid_map(g);
+	get_map(g, f_name, map_start);
+	//print_identifier(g);
 }

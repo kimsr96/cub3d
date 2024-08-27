@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/25 16:58:12 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/27 15:45:12 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,25 @@
 # include <stdlib.h>
 # include <stdio.h>
 
+# define WINDOW_W 
+# define WINDOW_H
+
 typedef struct s_asset
 {
-    char    ***split_line;
-	void	*walls[4];
-    int		floor;
-    char    *ceiling;
+	void	*wall_texture[4];
+    int		floor_color;
+    int		ceiling_color;
 }				t_asset;
 
 typedef struct s_map
 {
-    int         total_line;
-	int			row;
-	int			col;
+	size_t		row;
+	size_t		col;
 	int			pixel;
 	int			width;
 	int			height;
-	char		**info;
+	char		**map_2d;
+	char 		player_pos[2];
 }				t_map;
 
 typedef struct s_game
@@ -51,6 +53,17 @@ typedef struct s_game
 	//t_player	player;
 }				t_game;
 
+/* parsing_map.c */
+void	get_map_info(t_game *g, int fd, int *map_start);
+void	get_map(t_game *g, char *f_name, int map_start);
+
+/* valid_map.c */
+void	valid_map(t_game *g);
+
+/* print.c */
+void	print_identifier(t_game *g);
+void	print_map(t_game *g);
+
 void	read_map(t_game *g, char *f_name);
 void	get_info(t_game *g, char *f_name);
 
@@ -60,4 +73,12 @@ void	error_msg(void);
 
 /* get_hex_color.c */
 char    *int_to_hex_color(char **color_2d);
+int		combine_color(char **color_2d);
 #endif
+
+
+//open
+//get texture
+//get combine_color
+//get s_map
+//close

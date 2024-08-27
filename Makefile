@@ -3,10 +3,13 @@ CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 MLX = -Lmlx -lmlx -framework Metal -framework Appkit
 LIBFT = -Llibft -lft
 SRCS =  srcs/main.c \
+		srcs/parsing/print.c \
 		srcs/parsing/read_map.c \
 		srcs/parsing/utils.c \
 		srcs/parsing/parsing_file.c \
-		srcs/parsing/get_hex_color.c
+		srcs/parsing/parsing_map.c \
+		srcs/parsing/get_hex_color.c \
+		srcs/parsing/valid_map.c
 OBJS = $(SRCS:.c=.o)
 INCS = ./includes
 NAME = cub3D

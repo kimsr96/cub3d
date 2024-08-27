@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:23:35 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/25 13:49:03 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:44:40 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	*path2img(void *mlx, char *path)
 	img = mlx_xpm_file_to_image(mlx, path, &w, &h);
 	if (!img)
 		error_msg();
-	else
-		printf("success\n");
 	return (img);
 }
 
