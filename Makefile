@@ -6,8 +6,8 @@ SRCS =  srcs/main.c \
 		srcs/parsing/print.c \
 		srcs/parsing/read_map.c \
 		srcs/parsing/utils.c \
-		srcs/parsing/parsing_file.c \
-		srcs/parsing/parsing_map.c \
+		srcs/parsing/parsing_file_info.c \
+		srcs/parsing/parsing_map_info.c \
 		srcs/parsing/get_hex_color.c \
 		srcs/parsing/valid_map.c
 OBJS = $(SRCS:.c=.o)

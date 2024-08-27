@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_map.c                                      :+:      :+:    :+:   */
+/*   parsing_map_info.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 20:22:33 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/27 15:22:21 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/27 18:03:27 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static void	pass_empty_line(int fd, int *map_start)
 void	get_map_info(t_game *g, int fd, int *map_start)
 {	
 	int		idx;
+	int		col;
 	char	*line;
-	size_t	col;
 
 	idx = 0;
 	col = 0;
@@ -52,41 +52,39 @@ void	get_map_info(t_game *g, int fd, int *map_start)
 		if (!line)
 			break ;
 		g->map.row++;
-		if (ft_strlen(line) > col)
-			col = ft_strlen(line);
+		if ((int)ft_strlen(line) > col)
+			col = (int)ft_strlen(line);
 		free(line);
 	}
 	g->map.col = col - 1;
 }
 
-int	pass_line_before_map(char *f_name, int map_start)
+int	is_empty_line(char *s)
 {
-	int		fd;
-	char	*line;
+	int	i;
 
-	fd = open(f_name, O_RDONLY);
-	if (fd < 0)
-		exit (1);
-	while (--map_start)
+	i = 0;
+	while (s[i])
 	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
+		if (s[i] == ' ' || s[i] == '\n')
+			i++;
+		else
+			return (0);
 	}
-	return (fd);
+	return (1);
 }
 
 void	insert_to_2darr(int fd, t_game *g)
 {
-	size_t	x;
-	size_t	y;
+	int		x;
+	int		y;
 	char	*line;
 
 	y = 0;
 	while (y < g->map.row)
 	{
 		line = get_next_line(fd);
-		if (!line)
+		if (!line || is_empty_line(line))
 			break ;
 		x = 0;
 		while (line[x] && line[x] != '\n' && g->map.map_2d[y][x])
@@ -103,10 +101,30 @@ void	insert_to_2darr(int fd, t_game *g)
 	}
 }
 
+void	pass_left_line(int fd)
+{
+	int		i;
+	char	*line;
+
+	while (1)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		i = 0;
+		while (line[i])
+		{
+			if (line[i] != ' ' && line[i] != '\n')
+				error_msg();
+			i++;
+		}
+	}
+}
+
 void	get_map(t_game *g, char *f_name, int map_start)
 {
-	int		fd;
-	size_t	i;
+	int	fd;
+	int	i;
 
 	i = 0;
 	fd = pass_line_before_map(f_name, map_start);
@@ -123,4 +141,5 @@ void	get_map(t_game *g, char *f_name, int map_start)
 		i++;
 	}
 	insert_to_2darr(fd, g);
+	pass_left_line(fd);
 }

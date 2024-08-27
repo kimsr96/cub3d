@@ -1,33 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_file.c                                     :+:      :+:    :+:   */
+/*   parsing_file_info.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:45:49 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/27 15:44:08 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:48:32 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	valid_identifier(char *line, int idx)
-{
-	int			i;
-	const char	*id[6] = {"NO", "SO", "WE", "EA", "F", "C"};
-	const char	*name;
-
-	i = -1;
-	name = id[idx];
-	while (line[++i])
-	{
-		if (line[i] == ' ')
-			continue ;
-		if (!ft_strncmp(name, &line[i], 2))
-			i++;
-	}
-}
 
 void	insert_info(t_game *g, char ***split_line)
 {
@@ -135,5 +118,4 @@ void	get_info(t_game *g, char *f_name)
 	get_map_info(g, fd, &map_start);
 	close(fd);
 	get_map(g, f_name, map_start);
-	//print_identifier(g);
 }

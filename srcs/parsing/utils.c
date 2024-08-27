@@ -6,11 +6,28 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:23:35 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/26 18:44:40 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/27 18:01:59 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+int	pass_line_before_map(char *f_name, int map_start)
+{
+	int		fd;
+	char	*line;
+
+	fd = open(f_name, O_RDONLY);
+	if (fd < 0)
+		exit (1);
+	while (--map_start)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+	}
+	return (fd);
+}
 
 void	*path2img(void *mlx, char *path)
 {

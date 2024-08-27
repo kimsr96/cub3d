@@ -1,5 +1,11 @@
 #include "cub3d.h"
 
+void	print_player(t_game *g)
+{
+	printf("x: %d, y: %d\n", g->map.player_x, g->map.player_y);
+	printf("dir : %c\n", g->map.player_dir);
+}
+
 void	print_identifier(t_game *g)
 {
 	int	i;
@@ -16,7 +22,7 @@ void	print_identifier(t_game *g)
 
 void	print_map(t_game *g)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (i < g->map.row)

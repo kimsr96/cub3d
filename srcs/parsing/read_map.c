@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:32:03 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/27 15:44:17 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/27 19:48:59 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	read_map(t_game *g, char *f_name)
 	check_type(f_name);
     get_info(g, f_name);
 	valid_map(g);
-	print_map(g);
+	//print_map(g);
+	//print_player(g);
 	//check_map(g);
 }

@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/27 15:45:12 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/27 18:03:41 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@ typedef struct s_asset
 
 typedef struct s_map
 {
-	size_t		row;
-	size_t		col;
+	int			row;
+	int			col;
 	int			pixel;
 	int			width;
 	int			height;
 	char		**map_2d;
-	char 		player_pos[2];
+	int			player_x;
+	int			player_y;
+	char		player_dir;
 }				t_map;
 
 typedef struct s_game
@@ -61,6 +63,7 @@ void	get_map(t_game *g, char *f_name, int map_start);
 void	valid_map(t_game *g);
 
 /* print.c */
+void	print_player(t_game *g);
 void	print_identifier(t_game *g);
 void	print_map(t_game *g);
 
@@ -70,6 +73,7 @@ void	get_info(t_game *g, char *f_name);
 /* utils.c */
 void	*path2img(void *mlx, char *path);
 void	error_msg(void);
+int		pass_line_before_map(char *f_name, int map_start);
 
 /* get_hex_color.c */
 char    *int_to_hex_color(char **color_2d);
