@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:45:49 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/27 19:48:32 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/30 20:47:31 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,40 +34,34 @@ void	insert_info(t_game *g, char ***split_line)
 		}
 		i++;
 	}
-}
-
-void	count_comma(char *s)
-{
-	int	i;
-	int	cnt;
-
 	i = 0;
-	cnt = 0;
-	while (s[i])
+	while (i < 3)
 	{
-		if (s[i] == ',')
-			cnt++;
+		printf("%s\n", color_2d[i]);
 		i++;
 	}
-	if (cnt != 2)
-		error_msg();
 }
 
 int	get_parsing_line(char ***split_line, char *line)
 {
 	int			i;
-	const char	*id[6] = {"NO", "SO", "WE", "EA", "F", "C"};
+	char 		*ret;
+	const char	*id[6] = {"NO ", "SO ", "WE ", "EA ", "F ", "C "};
 
 	i = 0;
 	while (i < 6)
 	{
-		if (ft_strnstr(line, id[i], ft_strlen(line)))
+		ret = ft_strnstr(line, id[i], ft_strlen(line));
+		if (ret)
 		{
 			if (split_line[i])
 				error_msg();
-			split_line[i] = ft_split2(line, "\x20\n");
 			if (i >= 4)
-				count_comma(split_line[i][1]);
+			{
+				line = remove_space(line, (int)ft_strlen(id[i]));
+				count_comma(line);
+			}
+			split_line[i] = ft_split2(line, "\x20\n");
 			return (1);
 		}
 		i++;
