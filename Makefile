@@ -1,8 +1,10 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+# CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror
 MLX = -Lmlx -lmlx -framework Metal -framework Appkit
 LIBFT = -Llibft -lft
 SRCS =  srcs/main.c \
+		srcs/draw/dda_algorithm.c \
 		srcs/parsing/print.c \
 		srcs/parsing/read_map.c \
 		srcs/parsing/utils.c \
@@ -35,6 +37,7 @@ $(OBJ_DIR) :
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)/srcs
 	mkdir -p $(OBJ_DIR)/srcs/parsing
+	mkdir -p $(OBJ_DIR)/srcs/draw
 #mkdir -p $(OBJ_DIR)/bonus
 
 $(OBJ_DIR)/%.o : %.c | $(OBJ_DIR)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_map_info.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 20:22:33 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/27 18:03:27 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/30 21:15:06 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	insert_to_2darr(int fd, t_game *g)
 		if (!line || is_empty_line(line))
 			break ;
 		x = 0;
-		while (line[x] && line[x] != '\n' && g->map.map_2d[y][x])
+		while (line[x] && line[x] != '\n')
 		{
 			g->map.map_2d[y][x] = line[x];
 			x++;

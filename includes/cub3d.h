@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/27 21:24:37 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/08/30 20:14:13 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,12 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # include <stdio.h>
+# include <math.h>
 
-# define WINDOW_W 
-# define WINDOW_H
+# define WINDOW_W 1920
+# define WINDOW_H 1080
+# define WALL_X 0
+# define WALL_Y 1
 
 typedef struct s_asset
 {
@@ -42,6 +45,33 @@ typedef struct s_map
 	char		player_dir;
 }				t_map;
 
+typedef struct s_player
+{
+	double	pos_x;
+	double	pos_y;
+	double	dir_x;
+	double	dir_y;
+}	t_player;
+
+typedef struct s_ray
+{
+	int		step_x;
+	int		step_y;
+	int 	map_x;
+	int		map_y;
+	double	raydir_x;
+	double	raydir_y;
+	double	sidedist_x;
+	double	sidedist_y;
+	double	deltadist_x;
+	double	deltadist_y;
+	double	plane_x;
+	double	plane_y;
+	double	camera_x;
+	double	camera_y;
+	double	perp_wall_dist;
+}	t_ray;
+
 typedef struct s_game
 {
 	int			w;
@@ -52,21 +82,10 @@ typedef struct s_game
 	void		*win;
 	t_map		map;
 	t_asset		asset;
-	//t_player	player;
+	t_player	player;
+	t_ray		ray;
 }				t_game;
 
-typedef struct s_player
-{
-	int	pos_x;
-	int	pos_y;
-	int	dir_x;
-	int	dir_y;
-}	t_player;
-
-// typedef struct s_draw
-// {
-
-// }	t_draw
 
 /* parsing_map.c */
 void	get_map_info(t_game *g, int fd, int *map_start);
@@ -91,5 +110,13 @@ int		pass_line_before_map(char *f_name, int map_start);
 /* get_hex_color.c */
 char    *int_to_hex_color(char **color_2d);
 int		combine_color(char **color_2d);
+
+
+void	init_player(t_map *map, t_player *player);
+void	init_ray(t_map *map, t_ray *ray);
+void	set_ray(t_player *player, t_ray *ray, int x);
+void	calc_perp_wall_dist(t_ray *ray, t_player *player, int side);
+void	draw_vertical_line(t_game *game, int x, int side);
+void	draw(t_game *game);
 
 #endif
