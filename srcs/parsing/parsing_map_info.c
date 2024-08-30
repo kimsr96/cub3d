@@ -6,7 +6,11 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 20:22:33 by seungryk          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/08/30 21:15:06 by hyeonble         ###   ########.fr       */
+=======
+/*   Updated: 2024/08/30 21:39:21 by seungryk         ###   ########.fr       */
+>>>>>>> cb6e89df58a13aa7089f785e18dfde3f0c84963a
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +26,7 @@ static void	pass_empty_line(int fd, int *map_start)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			break ;
+			error_msg();
 		(*map_start)++;
 		i = 0;
 		while (line[i])
@@ -142,4 +146,5 @@ void	get_map(t_game *g, char *f_name, int map_start)
 	}
 	insert_to_2darr(fd, g);
 	pass_left_line(fd);
+	close(fd);
 }

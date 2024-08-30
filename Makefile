@@ -11,6 +11,7 @@ SRCS =  srcs/main.c \
 		srcs/parsing/parsing_file_info.c \
 		srcs/parsing/parsing_map_info.c \
 		srcs/parsing/get_hex_color.c \
+		srcs/parsing/get_fc_color.c \
 		srcs/parsing/valid_map.c
 OBJS = $(SRCS:.c=.o)
 INCS = ./includes
