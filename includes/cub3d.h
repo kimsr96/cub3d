@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/27 21:24:37 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/08/30 20:48:54 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,7 @@ int		pass_line_before_map(char *f_name, int map_start);
 char    *int_to_hex_color(char **color_2d);
 int		combine_color(char **color_2d);
 
+/* get_fc_color.c */
+void	count_comma(char *s);
+char	*remove_space(char *s, int idx);
 #endif

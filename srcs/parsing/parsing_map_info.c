@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 20:22:33 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/27 18:03:27 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/30 21:39:21 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	pass_empty_line(int fd, int *map_start)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			break ;
+			error_msg();
 		(*map_start)++;
 		i = 0;
 		while (line[i])
@@ -87,7 +87,7 @@ void	insert_to_2darr(int fd, t_game *g)
 		if (!line || is_empty_line(line))
 			break ;
 		x = 0;
-		while (line[x] && line[x] != '\n' && g->map.map_2d[y][x])
+		while (line[x] && line[x] != '\n')
 		{
 			g->map.map_2d[y][x] = line[x];
 			x++;
@@ -142,4 +142,5 @@ void	get_map(t_game *g, char *f_name, int map_start)
 	}
 	insert_to_2darr(fd, g);
 	pass_left_line(fd);
+	close(fd);
 }
