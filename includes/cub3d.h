@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/08/30 20:14:13 by hyeonble         ###   ########.fr       */
-=======
-/*   Updated: 2024/08/30 20:48:54 by seungryk         ###   ########.fr       */
->>>>>>> cb6e89df58a13aa7089f785e18dfde3f0c84963a
+/*   Updated: 2024/08/30 21:58:37 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +111,6 @@ int		pass_line_before_map(char *f_name, int map_start);
 char    *int_to_hex_color(char **color_2d);
 int		combine_color(char **color_2d);
 
-<<<<<<< HEAD
 
 void	init_player(t_map *map, t_player *player);
 void	init_ray(t_map *map, t_ray *ray);
@@ -124,9 +119,7 @@ void	calc_perp_wall_dist(t_ray *ray, t_player *player, int side);
 void	draw_vertical_line(t_game *game, int x, int side);
 void	draw(t_game *game);
 
-=======
 /* get_fc_color.c */
 void	count_comma(char *s);
 char	*remove_space(char *s, int idx);
->>>>>>> cb6e89df58a13aa7089f785e18dfde3f0c84963a
 #endif

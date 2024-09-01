@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_file_info.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:45:49 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/30 21:45:42 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/08/30 21:59:19 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,6 @@ void	insert_info(t_game *g, char ***split_line)
 		}
 		i++;
 	}
-}
-
-void	count_comma(char *s)
-{
-	int	i;
-	int	cnt;
-
-	i = 0;
-	cnt = 0;
-	while (s[i])
-	{
-		if (s[i] == ',')
-			cnt++;
-		i++;
-	}
-	if (cnt != 2)
-		error_msg();
 }
 
 int	get_parsing_line(char ***split_line, char *line)
