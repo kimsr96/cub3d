@@ -6,12 +6,12 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/30 21:58:37 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/03 22:00:30 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB_3D_H
-# define CUB_3D_H
+#ifndef CUB3D_H
+# define CUB3D_H
 
 # include "../mlx/mlx.h"
 # include "../libft/libft.h"
@@ -22,8 +22,26 @@
 
 # define WINDOW_W 1920
 # define WINDOW_H 1080
+
 # define WALL_X 0
 # define WALL_Y 1
+
+# define KEYPRESS 02
+# define DESTROYNOTIFY 17
+
+# define COLOR_BLACK 0X00000000
+
+# define MOVE_SPEED 0.2
+# define ROTATE_SPEED 0.1
+
+typedef struct s_image
+{
+	void	*img;
+	char	*addr;
+	int		bpp;
+	int		l;
+	int		endian;
+}				t_image;
 
 typedef struct s_asset
 {
@@ -80,6 +98,7 @@ typedef struct s_game
 	int			cnt_move;
 	void		*mlx;
 	void		*win;
+	t_image		image;
 	t_map		map;
 	t_asset		asset;
 	t_player	player;
@@ -119,7 +138,18 @@ void	calc_perp_wall_dist(t_ray *ray, t_player *player, int side);
 void	draw_vertical_line(t_game *game, int x, int side);
 void	draw(t_game *game);
 
+
+void	update_direction(t_player *player, t_ray *ray, double theta);
+void	update_vertical_pos(t_map *map, t_player *player, int dir);
+void	update_horizontal_pos(t_map *map, t_player *player, t_ray *ray, int dir);
+void	move_player(int keycode, t_game *game);
+void	rotate_player(int keycode, t_game *game);
+
+
+int	terminate(t_game *game);
+int	handle_keypress(int	keycode, t_game *game);
 /* get_fc_color.c */
 void	count_comma(char *s);
 char	*remove_space(char *s, int idx);
+
 #endif

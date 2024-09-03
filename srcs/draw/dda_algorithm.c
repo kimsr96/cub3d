@@ -6,11 +6,39 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:41:40 by hyeonble          #+#    #+#             */
-/*   Updated: 2024/09/01 21:26:46 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/03 22:03:23 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+void	put_pixel_to_image(t_image *image, int x, int y, int color)
+{
+	char	*dst;
+
+	if (x < 0 || y < 0 || x >= WINDOW_W || y >= WINDOW_H)
+		return ;
+	dst = image->addr + (y * image->l) + (x * image->bpp / 8);
+	*(unsigned int *)dst = color;
+}
+
+void	fill_black(t_image *image)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < WINDOW_W)
+	{
+		j = 0;
+		while (j < WINDOW_H)
+		{
+			put_pixel_to_image(image, i, j, COLOR_BLACK);
+			j++;
+		}
+		i++;
+	}
+}
 
 void	init_player(t_map *map, t_player *player)
 {
@@ -65,10 +93,8 @@ void	init_ray(t_map *map, t_ray *ray)
 void	set_ray(t_player *player, t_ray *ray, int x)
 {
 	ray->camera_x = 2 * x / (double)WINDOW_W - 1;
-	// printf("playerdirx: %f, playerdiry: %f", player->dir_x, player->dir_y);
 	ray->raydir_x = player->dir_x + ray->plane_x * ray->camera_x;
 	ray->raydir_y = player->dir_y + ray->plane_y * ray->camera_x;
-	// printf("raydirx: %f, raydiry: %f\n", ray->raydir_x, ray->raydir_y);
 	ray->map_x = (int)player->pos_x;
 	ray->map_y = (int)player->pos_y;
 	if (ray->raydir_x)
@@ -136,17 +162,17 @@ void	draw_vertical_line(t_game *game, int x, int side)
 	y = 0;
 	while (y < draw_start)
 	{
-		mlx_pixel_put(game->mlx, game->win, x, y, game->asset.ceiling_color);
+		put_pixel_to_image(&game->image, x, y, game->asset.ceiling_color);
 		y++;
 	}
 	while (y <= draw_end)
 	{
-		mlx_pixel_put(game->mlx, game->win, x, y, color);
+		put_pixel_to_image(&game->image, x, y, color);
 		y++;
 	}
 	while (y < WINDOW_H)
 	{
-		mlx_pixel_put(game->mlx, game->win, x, y, game->asset.floor_color);
+		put_pixel_to_image(&game->image, x, y, game->asset.floor_color);
 		y++;
 	}
 }
@@ -157,9 +183,10 @@ void	draw(t_game *game)
 	int	hit;
 	int	side;
 
+	fill_black(&game->image);
 	x = 0;
-	init_player(&game->map, &game->player);
-	init_ray(&game->map, &game->ray);
+	// init_player(&game->map, &game->player);
+	// init_ray(&game->map, &game->ray);
 	while (x < WINDOW_W)
 	{
 		set_ray(&game->player, &game->ray, x);
@@ -191,4 +218,5 @@ void	draw(t_game *game)
 		draw_vertical_line(game, x, side);
 		x++;
 	}
+	mlx_put_image_to_window(game->mlx, game->win, game->image.img, 0 , 0);
 }
