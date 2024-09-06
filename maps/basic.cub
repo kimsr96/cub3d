@@ -1,7 +1,7 @@
-NO ./texture/brick.xpm
-SO ./texture/brick.xpm
-WE ./texture/brick.xpm
-EA ./texture/brick.xpm
+NO ./texture/wall_n.xpm
+SO ./texture/wall_s.xpm
+WE ./texture/wall_w.xpm
+EA ./texture/wall_e.xpm
 
 F 220,100,0
 C 225,30,0

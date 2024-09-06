@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:23:35 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/27 18:01:59 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:43:55 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,14 @@ int	pass_line_before_map(char *f_name, int map_start)
 	return (fd);
 }
 
-void	*path2img(void *mlx, char *path)
+void	*xpmpath_to_img(void *mlx, char *path)
 {
 	int		w;
 	int		h;
 	void	*img;
 
 	img = mlx_xpm_file_to_image(mlx, path, &w, &h);
+	printf("path: %s\n", path);
 	if (!img)
 		error_msg();
 	return (img);

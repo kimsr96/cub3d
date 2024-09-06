@@ -5,6 +5,8 @@ MLX = -Lmlx -lmlx -framework Metal -framework Appkit
 LIBFT = -Llibft -lft
 SRCS =  srcs/main.c \
 		srcs/draw/dda_algorithm.c \
+		srcs/draw/draw_init.c \
+		srcs/draw/draw_utils.c \
 		srcs/draw/key_event.c \
 		srcs/draw/update.c \
 		srcs/parsing/print.c \

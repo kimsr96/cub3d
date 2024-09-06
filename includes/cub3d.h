@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/03 22:00:30 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:11:23 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,19 @@ typedef struct s_ray
 	double	perp_wall_dist;
 }	t_ray;
 
+typedef struct s_draw
+{
+	int		draw_start;
+	int		draw_end;
+	int		texnum;
+	int		tex_x;
+	int		tex_y;
+	int		color;
+	double	step;
+	double	wall_x;
+	double	tex_pos;
+}	t_draw;
+
 typedef struct s_game
 {
 	int			w;
@@ -103,6 +116,7 @@ typedef struct s_game
 	t_asset		asset;
 	t_player	player;
 	t_ray		ray;
+	t_draw		draw;
 }				t_game;
 
 
@@ -122,7 +136,7 @@ void	read_map(t_game *g, char *f_name);
 void	get_info(t_game *g, char *f_name);
 
 /* utils.c */
-void	*path2img(void *mlx, char *path);
+void	*xpmpath_to_img(void *mlx, char *path);
 void	error_msg(void);
 int		pass_line_before_map(char *f_name, int map_start);
 
@@ -130,12 +144,12 @@ int		pass_line_before_map(char *f_name, int map_start);
 char    *int_to_hex_color(char **color_2d);
 int		combine_color(char **color_2d);
 
-
+void	put_pixel_to_image(t_image *image, int x, int y, int color);
+void	fill_black(t_image *image);
 void	init_player(t_map *map, t_player *player);
 void	init_ray(t_map *map, t_ray *ray);
 void	set_ray(t_player *player, t_ray *ray, int x);
-void	calc_perp_wall_dist(t_ray *ray, t_player *player, int side);
-void	draw_vertical_line(t_game *game, int x, int side);
+
 void	draw(t_game *game);
 
 

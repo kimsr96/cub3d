@@ -6,128 +6,13 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:41:40 by hyeonble          #+#    #+#             */
-/*   Updated: 2024/09/03 22:03:23 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:47:27 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	put_pixel_to_image(t_image *image, int x, int y, int color)
-{
-	char	*dst;
-
-	if (x < 0 || y < 0 || x >= WINDOW_W || y >= WINDOW_H)
-		return ;
-	dst = image->addr + (y * image->l) + (x * image->bpp / 8);
-	*(unsigned int *)dst = color;
-}
-
-void	fill_black(t_image *image)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < WINDOW_W)
-	{
-		j = 0;
-		while (j < WINDOW_H)
-		{
-			put_pixel_to_image(image, i, j, COLOR_BLACK);
-			j++;
-		}
-		i++;
-	}
-}
-
-void	init_player(t_map *map, t_player *player)
-{
-	player->pos_x = (double)map->player_x;
-	player->pos_y = (double)map->player_y;
-	if (map->player_dir == 'N')
-	{
-		player->dir_x = 0.0;
-		player->dir_y = -1.0;
-	}
-	if (map->player_dir == 'S')
-	{
-		player->dir_x = 0.0;
-		player->dir_y = 1.0;
-	}
-	if (map->player_dir == 'W')
-	{
-		player->dir_x = -1.0;
-		player->dir_y = 0.0;
-	}
-	if (map->player_dir == 'E')
-	{
-		player->dir_x = 1.0;
-		player->dir_y = 0.0;
-	}
-}
-
-void	init_ray(t_map *map, t_ray *ray)
-{
-	if (map->player_dir == 'N')
-	{
-		ray->plane_x = 0.66;
-		ray->plane_y = 0.0;
-	}
-	if (map->player_dir == 'S')
-	{
-		ray->plane_x = -0.66;
-		ray->plane_y = 0.0;
-	}
-	if (map->player_dir == 'W')
-	{
-		ray->plane_x = 0.0;
-		ray->plane_y = -0.66;
-	}
-	if (map->player_dir == 'E')
-	{
-		ray->plane_x = 0.0;
-		ray->plane_y = 0.66;
-	}
-}
-
-void	set_ray(t_player *player, t_ray *ray, int x)
-{
-	ray->camera_x = 2 * x / (double)WINDOW_W - 1;
-	ray->raydir_x = player->dir_x + ray->plane_x * ray->camera_x;
-	ray->raydir_y = player->dir_y + ray->plane_y * ray->camera_x;
-	ray->map_x = (int)player->pos_x;
-	ray->map_y = (int)player->pos_y;
-	if (ray->raydir_x)
-		ray->deltadist_x = fabs(1 / ray->raydir_x);
-	else
-		ray->deltadist_x = 1e30;
-	if (ray->raydir_y)
-		ray->deltadist_y = fabs(1 / ray->raydir_y);
-	else
-		ray->deltadist_y = 1e30;
-	if (ray->raydir_x < 0)
-	{
-		ray->step_x = -1;
-		ray->sidedist_x = (player->pos_x - ray->map_x) * ray->deltadist_x;
-	}
-	else
-	{
-		ray->step_x = 1;
-		ray->sidedist_x = (ray->map_x + 1.0 - player->pos_x) * ray->deltadist_x;
-	}
-	if (ray->raydir_y < 0)
-	{
-		ray->step_y = -1;
-		ray->sidedist_y = (player->pos_y - ray->map_y) * ray->deltadist_y;
-	}
-	else
-	{
-		ray->step_y = 1;
-		ray->sidedist_y = (ray->map_y + 1.0 - player->pos_y) * ray->deltadist_y;
-	}
-}
-
-void	calc_perp_wall_dist(t_ray *ray, t_player *player, int side)
+static void	calc_perp_wall_dist(t_ray *ray, t_player *player, int side)
 {
 	if (side == WALL_X)
 	{
@@ -141,35 +26,17 @@ void	calc_perp_wall_dist(t_ray *ray, t_player *player, int side)
 	}
 }
 
-void	draw_vertical_line(t_game *game, int x, int side)
+static void	draw_ceiling_and_floor(t_game *game, int x)
 {
-	int	line_height;
-	int	draw_start;
-	int	draw_end;
-	int	color;
 	int	y;
 
-	line_height = (int)(WINDOW_H / game->ray.perp_wall_dist);
-	draw_start = -line_height / 2 + WINDOW_H / 2;
-	if (draw_start < 0)
-		draw_start = 0;
-	draw_end = line_height / 2 + WINDOW_H / 2;
-	if (draw_end >= WINDOW_H)
-		draw_end = WINDOW_H - 1;
-	color = 0x0000FF;
-	if (side == WALL_Y)
-		color = color / 2;
 	y = 0;
-	while (y < draw_start)
+	while (y < game->draw.draw_start)
 	{
 		put_pixel_to_image(&game->image, x, y, game->asset.ceiling_color);
 		y++;
 	}
-	while (y <= draw_end)
-	{
-		put_pixel_to_image(&game->image, x, y, color);
-		y++;
-	}
+	y = game->draw.draw_end;
 	while (y < WINDOW_H)
 	{
 		put_pixel_to_image(&game->image, x, y, game->asset.floor_color);
@@ -177,45 +44,141 @@ void	draw_vertical_line(t_game *game, int x, int side)
 	}
 }
 
+static double	get_wall_x(t_game *game, int side)
+{
+	t_player	player;
+	t_ray		ray;
+	double		wall_x;
+
+	player = game->player;
+	ray = game->ray;
+	if (side == WALL_X)
+		wall_x = player.pos_y + ray.perp_wall_dist * ray.raydir_y;
+	else
+		wall_x = player.pos_x + ray.perp_wall_dist * ray.raydir_x;
+	wall_x -= floor(wall_x);
+	return (wall_x);
+}
+
+static int	get_tex_x(t_game *game, double wall_x, int side)
+{
+	int	tex_x;
+
+	tex_x = (int)(wall_x * 64);
+	if (side == WALL_X && game->ray.raydir_x > 0)
+		tex_x = 64 - tex_x - 1;
+	if (side == WALL_Y && game->ray.raydir_y < 0)
+		tex_x = 64 - tex_x - 1;
+	return (tex_x);
+}
+
+static unsigned int	get_tex_color(t_game *game)
+{
+	int		bpp;
+	int		size_line;
+	int		endian;
+	char	*tex_ptr;
+	char	*texture_data;
+
+	texture_data = mlx_get_data_addr(game->asset.wall_texture[game->draw.texnum]\
+	, &bpp, &size_line, &endian);
+	tex_ptr = texture_data + (game->draw.tex_y * size_line + (game->draw.tex_x * (bpp / 8)));
+	return (*(unsigned int *)tex_ptr);
+}
+
+static void	draw_vertical_line(t_game *game, int x, int side)
+{
+	int	y;
+
+	game->draw.wall_x = get_wall_x(game, side);
+	game->draw.tex_x = get_tex_x(game, game->draw.wall_x, side);
+	game->draw.step = 1.0 * 64 / (game->draw.draw_end - game->draw.draw_start);
+	game->draw.tex_pos = (game->draw.draw_start - WINDOW_H / 2 + \
+	(game->draw.draw_end - game->draw.draw_start) / 2) * game->draw.step;
+	y = game->draw.draw_start;
+	while (y < game->draw.draw_end)
+	{
+		game->draw.tex_y = (int)game->draw.tex_pos & (64 - 1);
+		game->draw.tex_pos += game->draw.step;
+		game->draw.color = get_tex_color(game);
+		if (side == WALL_Y)
+			game->draw.color = (game->draw.color >> 1) & 8355711;
+		put_pixel_to_image(&game->image, x, y, game->draw.color);
+		y++;
+	}
+}
+
+static int	select_texture(t_game *game, int side)
+{
+	if (side == WALL_X)
+	{
+		if (game->ray.raydir_x > 0)
+			return (3);
+		else
+			return (2);
+	}
+	else
+	{
+		if (game->ray.raydir_y > 0)
+			return (1);
+		else
+			return (0);
+	}
+}
+
+static void	raycast(t_game *game, int x)
+{
+	int	hit;
+	int	side;
+	int	line_height;
+
+	hit = 0;
+	while (!hit)
+	{
+		if (game->ray.sidedist_x < game->ray.sidedist_y)
+		{
+			game->ray.sidedist_x += game->ray.deltadist_x;
+			game->ray.map_x += game->ray.step_x;
+			side = WALL_X;
+		}
+		else
+		{
+			game->ray.sidedist_y += game->ray.deltadist_y;
+			game->ray.map_y += game->ray.step_y;
+			side = WALL_Y;
+		}
+		if (game->ray.map_x >= 0 && game->ray.map_x < game->map.col && \
+		game->ray.map_y >= 0 && game->ray.map_y < game->map.row) 
+		{
+			if (game->map.map_2d[game->ray.map_y][game->ray.map_x] > '0')
+				hit = 1;
+		}
+		else
+			hit = 1;
+	}
+	game->draw.texnum = select_texture(game, side);
+	line_height = (int)(WINDOW_H / game->ray.perp_wall_dist);
+	game->draw.draw_start = -line_height / 2 + WINDOW_H / 2;
+	if (game->draw.draw_start < 0)
+		game->draw.draw_start = 0;
+	game->draw.draw_end = line_height / 2 + WINDOW_H / 2;
+	if (game->draw.draw_end >= WINDOW_H)
+		game->draw.draw_end = WINDOW_H - 1;
+	calc_perp_wall_dist(&game->ray, &game->player, side);
+	draw_ceiling_and_floor(game, x);
+	draw_vertical_line(game, x, side);
+}
+
 void	draw(t_game *game)
 {
 	int	x;
-	int	hit;
-	int	side;
 
 	fill_black(&game->image);
 	x = 0;
-	// init_player(&game->map, &game->player);
-	// init_ray(&game->map, &game->ray);
 	while (x < WINDOW_W)
 	{
 		set_ray(&game->player, &game->ray, x);
-		hit = 0;
-		while (!hit)
-		{
-			if (game->ray.sidedist_x < game->ray.sidedist_y)
-			{
-				game->ray.sidedist_x += game->ray.deltadist_x;
-				game->ray.map_x += game->ray.step_x;
-				side = WALL_X;
-			}
-			else
-			{
-				game->ray.sidedist_y += game->ray.deltadist_y;
-				game->ray.map_y += game->ray.step_y;
-				side = WALL_Y;
-			}
-			if (game->ray.map_x >= 0 && game->ray.map_x < game->map.col && \
-			game->ray.map_y >= 0 && game->ray.map_y < game->map.row) 
-			{
-				if (game->map.map_2d[game->ray.map_y][game->ray.map_x] > '0')
-					hit = 1;
-			}
-			else
-				hit = 1;
-		}
-		calc_perp_wall_dist(&game->ray, &game->player, side);
-		draw_vertical_line(game, x, side);
+		raycast(game, x);
 		x++;
 	}
 	mlx_put_image_to_window(game->mlx, game->win, game->image.img, 0 , 0);

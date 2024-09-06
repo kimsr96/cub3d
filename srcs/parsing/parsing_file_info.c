@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:45:49 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/30 21:59:19 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/06 17:10:09 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	insert_info(t_game *g, char ***split_line)
 	while (i < 6)
 	{
 		if (i < 4)
-			g->asset.wall_texture[i] = path2img(g->mlx, split_line[i][1]);
+			g->asset.wall_texture[i] = xpmpath_to_img(g->mlx, split_line[i][1]);
 		else if (i == 4)
 		{
 			color_2d = ft_split(split_line[4][1], ',');
