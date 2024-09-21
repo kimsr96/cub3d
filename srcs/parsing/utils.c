@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:23:35 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/06 17:43:55 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:30:13 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	*xpmpath_to_img(void *mlx, char *path)
 	void	*img;
 
 	img = mlx_xpm_file_to_image(mlx, path, &w, &h);
-	printf("path: %s\n", path);
 	if (!img)
 		error_msg();
 	return (img);

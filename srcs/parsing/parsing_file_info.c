@@ -6,11 +6,16 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:45:49 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/06 17:10:09 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/14 21:45:52 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
+static void	set_texture(t_image *tex)
+{
+	tex->addr = mlx_get_data_addr(tex->img, &tex->bpp, &tex->l, &tex->endian);
+}
 
 void	insert_info(t_game *g, char ***split_line)
 {
@@ -21,7 +26,10 @@ void	insert_info(t_game *g, char ***split_line)
 	while (i < 6)
 	{
 		if (i < 4)
-			g->asset.wall_texture[i] = xpmpath_to_img(g->mlx, split_line[i][1]);
+		{
+			g->asset.texture[i].img = xpmpath_to_img(g->mlx, split_line[i][1]);
+			set_texture(&(g->asset.texture[i]));
+		}
 		else if (i == 4)
 		{
 			color_2d = ft_split(split_line[4][1], ',');
@@ -35,6 +43,7 @@ void	insert_info(t_game *g, char ***split_line)
 		i++;
 	}
 }
+
 
 int	get_parsing_line(char ***split_line, char *line)
 {

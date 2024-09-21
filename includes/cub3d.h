@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/06 17:11:23 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:16:52 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 
 # define MOVE_SPEED 0.2
 # define ROTATE_SPEED 0.1
-
+# define PLAYER_RADIUS 0.2
 typedef struct s_image
 {
 	void	*img;
@@ -45,9 +45,9 @@ typedef struct s_image
 
 typedef struct s_asset
 {
-	void	*wall_texture[4];
-    int		floor_color;
-    int		ceiling_color;
+	t_image			texture[4];
+    int				floor_color;
+    int				ceiling_color;
 }				t_asset;
 
 typedef struct s_map
@@ -151,7 +151,6 @@ void	init_ray(t_map *map, t_ray *ray);
 void	set_ray(t_player *player, t_ray *ray, int x);
 
 void	draw(t_game *game);
-
 
 void	update_direction(t_player *player, t_ray *ray, double theta);
 void	update_vertical_pos(t_map *map, t_player *player, int dir);

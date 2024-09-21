@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 20:16:55 by hyeonble          #+#    #+#             */
-/*   Updated: 2024/09/03 21:59:04 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/21 20:16:46 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,14 @@ void	update_vertical_pos(t_map *map, t_player *player, int dir)
 {
 	double	delta_x;
 	double	delta_y;
+	double 	collision_dist;
 
 	delta_x = player->dir_x * MOVE_SPEED * dir;
 	delta_y = player->dir_y * MOVE_SPEED * dir;
-	if (map->map_2d[(int)player->pos_y][(int)(player->pos_x + delta_x)] == '0')
+	collision_dist = 0.5 * dir;
+	if (map->map_2d[(int)player->pos_y][(int)(player->pos_x + delta_x + collision_dist)] == '0')
 		player->pos_x += delta_x;
-	if (map->map_2d[(int)(player->pos_y + delta_y)][(int)player->pos_x] == '0')
+	if (map->map_2d[(int)(player->pos_y + delta_y + collision_dist)][(int)player->pos_x] == '0')
 		player->pos_y += delta_y;
 }
 
@@ -42,13 +44,15 @@ void	update_horizontal_pos(t_map *map, t_player *player, t_ray *ray, int dir)
 {
 	double	delta_x;
 	double	delta_y;
+	double	collision_dist;
 
 	delta_x = ray->plane_x * MOVE_SPEED * dir;
 	delta_y = ray->plane_y * MOVE_SPEED * dir;
+	collision_dist = 0.5 * dir;
 
-	if (map->map_2d[(int)player->pos_y][(int)(player->pos_x + delta_x)] == '0')
+	if (map->map_2d[(int)player->pos_y][(int)(player->pos_x + delta_x + collision_dist)] == '0')
 		player->pos_x += delta_x;
-	if (map->map_2d[(int)(player->pos_y + delta_y)][(int)player->pos_x] == '0')
+	if (map->map_2d[(int)(player->pos_y + delta_y + collision_dist)][(int)player->pos_x] == '0')
 		player->pos_y += delta_y;
 }
 

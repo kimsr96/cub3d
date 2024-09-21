@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:41:40 by hyeonble          #+#    #+#             */
-/*   Updated: 2024/09/06 17:47:27 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/21 16:54:54 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,24 @@ static int	get_tex_x(t_game *game, double wall_x, int side)
 	int	tex_x;
 
 	tex_x = (int)(wall_x * 64);
-	if (side == WALL_X && game->ray.raydir_x > 0)
+	if (side == WALL_X && game->ray.raydir_x < 0)
 		tex_x = 64 - tex_x - 1;
-	if (side == WALL_Y && game->ray.raydir_y < 0)
+	if (side == WALL_Y && game->ray.raydir_y > 0)
 		tex_x = 64 - tex_x - 1;
 	return (tex_x);
 }
 
-static unsigned int	get_tex_color(t_game *game)
+static unsigned int	get_tex_color(t_game *game, int tex_x, int tex_y)
 {
-	int		bpp;
-	int		size_line;
-	int		endian;
-	char	*tex_ptr;
+	int		texnum;
+	t_image	*texture;
 	char	*texture_data;
+	char	*tex_ptr;
 
-	texture_data = mlx_get_data_addr(game->asset.wall_texture[game->draw.texnum]\
-	, &bpp, &size_line, &endian);
-	tex_ptr = texture_data + (game->draw.tex_y * size_line + (game->draw.tex_x * (bpp / 8)));
+	texnum = game->draw.texnum;
+	texture = &game->asset.texture[texnum];
+	texture_data = texture->addr;
+	tex_ptr = texture_data + (tex_y * texture->l + tex_x * (texture->bpp / 8));
 	return (*(unsigned int *)tex_ptr);
 }
 
@@ -100,7 +100,7 @@ static void	draw_vertical_line(t_game *game, int x, int side)
 	{
 		game->draw.tex_y = (int)game->draw.tex_pos & (64 - 1);
 		game->draw.tex_pos += game->draw.step;
-		game->draw.color = get_tex_color(game);
+		game->draw.color = get_tex_color(game, game->draw.tex_x, game->draw.tex_y);
 		if (side == WALL_Y)
 			game->draw.color = (game->draw.color >> 1) & 8355711;
 		put_pixel_to_image(&game->image, x, y, game->draw.color);
@@ -173,7 +173,6 @@ void	draw(t_game *game)
 {
 	int	x;
 
-	fill_black(&game->image);
 	x = 0;
 	while (x < WINDOW_W)
 	{
