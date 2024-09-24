@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 20:16:55 by hyeonble          #+#    #+#             */
-/*   Updated: 2024/09/21 20:16:46 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/24 21:51:53 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,35 +25,46 @@ void	update_direction(t_player *player, t_ray *ray, double theta)
 	ray->plane_y = old_planex * sin(theta) + ray->plane_y * cos(theta);
 }
 
+int	is_collision(t_map *map, double x, double y)
+{
+	return (map->map_2d[(int)y][(int)x] == '1');
+}
+
+int	check_collision_with_radius(t_map *map, double new_x, double new_y)
+{
+	if (is_collision(map, new_x + PLAYER_RADIUS, new_y + PLAYER_RADIUS) ||
+		is_collision(map, new_x - PLAYER_RADIUS, new_y + PLAYER_RADIUS) ||
+		is_collision(map, new_x + PLAYER_RADIUS, new_y - PLAYER_RADIUS) ||
+		is_collision(map, new_x - PLAYER_RADIUS, new_y - PLAYER_RADIUS))
+	{
+		return (1);
+	}
+	return (0);
+}
 void	update_vertical_pos(t_map *map, t_player *player, int dir)
 {
-	double	delta_x;
-	double	delta_y;
-	double 	collision_dist;
+	double	new_pos_x;
+	double	new_pos_y;
 
-	delta_x = player->dir_x * MOVE_SPEED * dir;
-	delta_y = player->dir_y * MOVE_SPEED * dir;
-	collision_dist = 0.5 * dir;
-	if (map->map_2d[(int)player->pos_y][(int)(player->pos_x + delta_x + collision_dist)] == '0')
-		player->pos_x += delta_x;
-	if (map->map_2d[(int)(player->pos_y + delta_y + collision_dist)][(int)player->pos_x] == '0')
-		player->pos_y += delta_y;
+	new_pos_x = player->pos_x + player->dir_x * MOVE_SPEED * dir;
+	new_pos_y = player->pos_y + player->dir_y * MOVE_SPEED * dir;
+	if (!check_collision_with_radius(map, new_pos_x, player->pos_y))
+		player->pos_x = new_pos_x;
+	if (!check_collision_with_radius(map, player->pos_x, new_pos_y))
+		player->pos_y = new_pos_y;
 }
 
 void	update_horizontal_pos(t_map *map, t_player *player, t_ray *ray, int dir)
 {
-	double	delta_x;
-	double	delta_y;
-	double	collision_dist;
+	double	new_pos_x;
+	double	new_pos_y;
 
-	delta_x = ray->plane_x * MOVE_SPEED * dir;
-	delta_y = ray->plane_y * MOVE_SPEED * dir;
-	collision_dist = 0.5 * dir;
-
-	if (map->map_2d[(int)player->pos_y][(int)(player->pos_x + delta_x + collision_dist)] == '0')
-		player->pos_x += delta_x;
-	if (map->map_2d[(int)(player->pos_y + delta_y + collision_dist)][(int)player->pos_x] == '0')
-		player->pos_y += delta_y;
+	new_pos_x = player->pos_x + ray->plane_x * MOVE_SPEED * dir;
+	new_pos_y = player->pos_y + ray->plane_y * MOVE_SPEED * dir;
+	if (!check_collision_with_radius(map, new_pos_x, player->pos_y))
+		player->pos_x = new_pos_x;
+	if (!check_collision_with_radius(map, player->pos_x, new_pos_y))
+		player->pos_y = new_pos_y;
 }
 
 void	move_player(int keycode, t_game *game)

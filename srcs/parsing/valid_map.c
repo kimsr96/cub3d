@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 15:09:30 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/30 21:08:54 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/24 21:48:05 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	get_player_info(t_game *g, char **map)
 				g->map.player_x = x;
 				g->map.player_y = y;
 				g->map.player_dir = map[y][x];
+				map[y][x] = '0';
 			}
 			else
 				error_msg();

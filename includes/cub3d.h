@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/21 20:16:52 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/24 21:45:52 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@
 # define COLOR_BLACK 0X00000000
 
 # define MOVE_SPEED 0.2
-# define ROTATE_SPEED 0.1
-# define PLAYER_RADIUS 0.2
+# define ROTATE_SPEED 0.2
+# define PLAYER_RADIUS 0.1
 typedef struct s_image
 {
 	void	*img;
@@ -152,6 +152,8 @@ void	set_ray(t_player *player, t_ray *ray, int x);
 
 void	draw(t_game *game);
 
+int	is_collision(t_map *map, double x, double y);
+int	check_collision_with_radius(t_map *map, double new_x, double new_y);
 void	update_direction(t_player *player, t_ray *ray, double theta);
 void	update_vertical_pos(t_map *map, t_player *player, int dir);
 void	update_horizontal_pos(t_map *map, t_player *player, t_ray *ray, int dir);
