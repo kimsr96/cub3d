@@ -22,12 +22,8 @@ SRCS =  srcs/main.c \
 OBJS = $(SRCS:.c=.o)
 INCS = ./includes
 NAME = cub3D
-#SRCS_B = 
-#OBJS_B = $(SRCS_B:.c=.o)
-#HEADER_B = bonus/ft_solong_bonus.h
 OBJ_DIR = obj
 OBJECTS = $(addprefix $(OBJ_DIR)/, $(OBJS))
-#OBJECTS_B = $(addprefix $(OBJ_DIR)/, $(OBJS_B))
 
 all : $(NAME)
 
@@ -38,28 +34,15 @@ $(NAME): $(OBJECTS) $(INCS)
 	$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME) -I $(INCS) $(LIBFT) $(MLX)
 	@ touch $@
 
-#bonus : $(OBJECTS_B) make_bonus
 
 $(OBJ_DIR) :
 	mkdir -p $(OBJ_DIR)
 	mkdir -p $(OBJ_DIR)/srcs
 	mkdir -p $(OBJ_DIR)/srcs/parsing
 	mkdir -p $(OBJ_DIR)/srcs/draw
-#mkdir -p $(OBJ_DIR)/bonus
 
 $(OBJ_DIR)/%.o : %.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $^ -o $@ -I $(INCS)
-
-#make_mandatory : $(OBJECTS) $(HEADER)
-#rm -f make_mandatory make_bonus
-
-#make_bonus : $(OBJECTS_B) $(HEADER_B)
-#	rm -f make_mandatory make_bonus
-#	make -C ./libft
-#	make -C ./mlx
-#	cp ./mlx/libmlx.dylib ./
-#	$(CC) $(CFLAGS) $(OBJECTS_B) -o $(NAME) $(LIBFT) $(MLX)
-#	@ touch $@
 
 clean :
 	make -C ./libft clean
