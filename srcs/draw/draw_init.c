@@ -6,11 +6,11 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 16:07:56 by hyeonble          #+#    #+#             */
-/*   Updated: 2024/09/06 16:08:24 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/29 18:11:41 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "cub3d.h"
+#include "cub3d.h"
 
 void	init_player(t_map *map, t_player *player)
 {
@@ -77,6 +77,11 @@ void	set_ray(t_player *player, t_ray *ray, int x)
 		ray->deltadist_y = fabs(1 / ray->raydir_y);
 	else
 		ray->deltadist_y = 1e30;
+	set_sidedist(player, ray);
+}
+
+void	set_sidedist(t_player *player, t_ray *ray)
+{
 	if (ray->raydir_x < 0)
 	{
 		ray->step_x = -1;

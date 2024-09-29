@@ -6,13 +6,13 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:41:40 by hyeonble          #+#    #+#             */
-/*   Updated: 2024/09/21 16:54:54 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/29 18:07:39 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-static void	calc_perp_wall_dist(t_ray *ray, t_player *player, int side)
+void	calc_perp_wall_dist(t_ray *ray, t_player *player, int side)
 {
 	if (side == WALL_X)
 	{
@@ -26,25 +26,7 @@ static void	calc_perp_wall_dist(t_ray *ray, t_player *player, int side)
 	}
 }
 
-static void	draw_ceiling_and_floor(t_game *game, int x)
-{
-	int	y;
-
-	y = 0;
-	while (y < game->draw.draw_start)
-	{
-		put_pixel_to_image(&game->image, x, y, game->asset.ceiling_color);
-		y++;
-	}
-	y = game->draw.draw_end;
-	while (y < WINDOW_H)
-	{
-		put_pixel_to_image(&game->image, x, y, game->asset.floor_color);
-		y++;
-	}
-}
-
-static double	get_wall_x(t_game *game, int side)
+double	get_wall_x(t_game *game, int side)
 {
 	t_player	player;
 	t_ray		ray;
@@ -60,7 +42,7 @@ static double	get_wall_x(t_game *game, int side)
 	return (wall_x);
 }
 
-static int	get_tex_x(t_game *game, double wall_x, int side)
+int	get_tex_x(t_game *game, double wall_x, int side)
 {
 	int	tex_x;
 
@@ -72,7 +54,7 @@ static int	get_tex_x(t_game *game, double wall_x, int side)
 	return (tex_x);
 }
 
-static unsigned int	get_tex_color(t_game *game, int tex_x, int tex_y)
+unsigned int	get_tex_color(t_game *game, int tex_x, int tex_y)
 {
 	int		texnum;
 	t_image	*texture;
@@ -86,29 +68,7 @@ static unsigned int	get_tex_color(t_game *game, int tex_x, int tex_y)
 	return (*(unsigned int *)tex_ptr);
 }
 
-static void	draw_vertical_line(t_game *game, int x, int side)
-{
-	int	y;
-
-	game->draw.wall_x = get_wall_x(game, side);
-	game->draw.tex_x = get_tex_x(game, game->draw.wall_x, side);
-	game->draw.step = 1.0 * 64 / (game->draw.draw_end - game->draw.draw_start);
-	game->draw.tex_pos = (game->draw.draw_start - WINDOW_H / 2 + \
-	(game->draw.draw_end - game->draw.draw_start) / 2) * game->draw.step;
-	y = game->draw.draw_start;
-	while (y < game->draw.draw_end)
-	{
-		game->draw.tex_y = (int)game->draw.tex_pos & (64 - 1);
-		game->draw.tex_pos += game->draw.step;
-		game->draw.color = get_tex_color(game, game->draw.tex_x, game->draw.tex_y);
-		if (side == WALL_Y)
-			game->draw.color = (game->draw.color >> 1) & 8355711;
-		put_pixel_to_image(&game->image, x, y, game->draw.color);
-		y++;
-	}
-}
-
-static int	select_texture(t_game *game, int side)
+int	select_texture(t_game *game, int side)
 {
 	if (side == WALL_X)
 	{
@@ -124,61 +84,4 @@ static int	select_texture(t_game *game, int side)
 		else
 			return (0);
 	}
-}
-
-static void	raycast(t_game *game, int x)
-{
-	int	hit;
-	int	side;
-	int	line_height;
-
-	hit = 0;
-	while (!hit)
-	{
-		if (game->ray.sidedist_x < game->ray.sidedist_y)
-		{
-			game->ray.sidedist_x += game->ray.deltadist_x;
-			game->ray.map_x += game->ray.step_x;
-			side = WALL_X;
-		}
-		else
-		{
-			game->ray.sidedist_y += game->ray.deltadist_y;
-			game->ray.map_y += game->ray.step_y;
-			side = WALL_Y;
-		}
-		if (game->ray.map_x >= 0 && game->ray.map_x < game->map.col && \
-		game->ray.map_y >= 0 && game->ray.map_y < game->map.row) 
-		{
-			if (game->map.map_2d[game->ray.map_y][game->ray.map_x] > '0')
-				hit = 1;
-		}
-		else
-			hit = 1;
-	}
-	game->draw.texnum = select_texture(game, side);
-	line_height = (int)(WINDOW_H / game->ray.perp_wall_dist);
-	game->draw.draw_start = -line_height / 2 + WINDOW_H / 2;
-	if (game->draw.draw_start < 0)
-		game->draw.draw_start = 0;
-	game->draw.draw_end = line_height / 2 + WINDOW_H / 2;
-	if (game->draw.draw_end >= WINDOW_H)
-		game->draw.draw_end = WINDOW_H - 1;
-	calc_perp_wall_dist(&game->ray, &game->player, side);
-	draw_ceiling_and_floor(game, x);
-	draw_vertical_line(game, x, side);
-}
-
-void	draw(t_game *game)
-{
-	int	x;
-
-	x = 0;
-	while (x < WINDOW_W)
-	{
-		set_ray(&game->player, &game->ray, x);
-		raycast(game, x);
-		x++;
-	}
-	mlx_put_image_to_window(game->mlx, game->win, game->image.img, 0 , 0);
 }

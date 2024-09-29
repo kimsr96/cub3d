@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/24 21:45:52 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/29 18:09:22 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,50 +121,57 @@ typedef struct s_game
 
 
 /* parsing_map.c */
-void	get_map_info(t_game *g, int fd, int *map_start);
-void	get_map(t_game *g, char *f_name, int map_start);
+void			get_map_info(t_game *g, int fd, int *map_start);
+void			get_map(t_game *g, char *f_name, int map_start);
 
 /* valid_map.c */
-void	valid_map(t_game *g);
+void			valid_map(t_game *g);
 
 /* print.c */
-void	print_player(t_game *g);
-void	print_identifier(t_game *g);
-void	print_map(t_game *g);
+void			print_player(t_game *g);
+void			print_identifier(t_game *g);
+void			print_map(t_game *g);
 
-void	read_map(t_game *g, char *f_name);
-void	get_info(t_game *g, char *f_name);
+void			read_map(t_game *g, char *f_name);
+void			get_info(t_game *g, char *f_name);
 
 /* utils.c */
-void	*xpmpath_to_img(void *mlx, char *path);
-void	error_msg(void);
-int		pass_line_before_map(char *f_name, int map_start);
+void			*xpmpath_to_img(void *mlx, char *path);
+void			error_msg(void);
+int				pass_line_before_map(char *f_name, int map_start);
 
 /* get_hex_color.c */
-char    *int_to_hex_color(char **color_2d);
-int		combine_color(char **color_2d);
+char			*int_to_hex_color(char **color_2d);
+int				combine_color(char **color_2d);
 
-void	put_pixel_to_image(t_image *image, int x, int y, int color);
-void	fill_black(t_image *image);
-void	init_player(t_map *map, t_player *player);
-void	init_ray(t_map *map, t_ray *ray);
-void	set_ray(t_player *player, t_ray *ray, int x);
+void			put_pixel_to_image(t_image *image, int x, int y, int color);
+void			init_player(t_map *map, t_player *player);
+void			init_ray(t_map *map, t_ray *ray);
+void			set_ray(t_player *player, t_ray *ray, int x);
+void			set_sidedist(t_player *player, t_ray *ray);
 
-void	draw(t_game *game);
+void			calc_perp_wall_dist(t_ray *ray, t_player *player, int side);
+double			get_wall_x(t_game *game, int side);
+int				get_tex_x(t_game *game, double wall_x, int side);
+unsigned int	get_tex_color(t_game *game, int tex_x, int tex_y);
+int				select_texture(t_game *game, int side);
 
-int	is_collision(t_map *map, double x, double y);
-int	check_collision_with_radius(t_map *map, double new_x, double new_y);
-void	update_direction(t_player *player, t_ray *ray, double theta);
-void	update_vertical_pos(t_map *map, t_player *player, int dir);
-void	update_horizontal_pos(t_map *map, t_player *player, t_ray *ray, int dir);
-void	move_player(int keycode, t_game *game);
-void	rotate_player(int keycode, t_game *game);
+void			draw_ceiling_and_floor(t_game *game, int x);
+void			draw_vertical_line(t_game *game, int x, int side);
+void			draw(t_game *game);
 
+int				is_collision(t_map *map, double x, double y);
+int				check_collision_with_radius(t_map *map, double new_x, double new_y);
+void			update_direction(t_player *player, t_ray *ray, double theta);
+void			update_vertical_pos(t_map *map, t_player *player, int dir);
+void			update_horizontal_pos(t_map *map, t_player *player, t_ray *ray, int dir);
+void			move_player(int keycode, t_game *game);
+void			rotate_player(int keycode, t_game *game);
 
-int	terminate(t_game *game);
-int	handle_keypress(int	keycode, t_game *game);
+int				terminate(t_game *game);
+int				handle_keypress(int	keycode, t_game *game);
 /* get_fc_color.c */
-void	count_comma(char *s);
-char	*remove_space(char *s, int idx);
+void			count_comma(char *s);
+char			*remove_space(char *s, int idx);
 
 #endif

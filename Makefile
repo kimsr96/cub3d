@@ -9,6 +9,8 @@ SRCS =  srcs/main.c \
 		srcs/draw/draw_utils.c \
 		srcs/draw/key_event.c \
 		srcs/draw/update.c \
+		srcs/draw/check_collision.c \
+		srcs/draw/draw.c \
 		srcs/parsing/print.c \
 		srcs/parsing/read_map.c \
 		srcs/parsing/utils.c \

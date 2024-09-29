@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 09:28:19 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/03 21:16:44 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/29 18:32:42 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,8 @@ int	main(int argc, char **argv)
 	ft_memset(&g, 0, sizeof(g));
 	g.mlx = mlx_init();
 	g.win = mlx_new_window(g.mlx, WINDOW_W, WINDOW_H, "cub3d");
-	// g.image.img = mlx_new_image(g.mlx, WINDOW_W, WINDOW_H);
-	// g.image.addr = mlx_get_data_addr(g.image.img, &g.image.bpp, &g.image.l, &g.image.endian);
 	init_image(&g.image, g.mlx);
-	//asset_init(&g);
 	read_map(&g, argv[1]);
-	//mlx_put_window(&g);
-	// mlx_loop_hook(g.mlx, draw, &g);
 	init_player(&g.map, &g.player);
 	init_ray(&g.map, &g.ray);
 	draw(&g);

@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/01 20:16:55 by hyeonble          #+#    #+#             */
-/*   Updated: 2024/09/24 21:51:53 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/29 17:18:54 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,6 @@ void	update_direction(t_player *player, t_ray *ray, double theta)
 	ray->plane_y = old_planex * sin(theta) + ray->plane_y * cos(theta);
 }
 
-int	is_collision(t_map *map, double x, double y)
-{
-	return (map->map_2d[(int)y][(int)x] == '1');
-}
-
-int	check_collision_with_radius(t_map *map, double new_x, double new_y)
-{
-	if (is_collision(map, new_x + PLAYER_RADIUS, new_y + PLAYER_RADIUS) ||
-		is_collision(map, new_x - PLAYER_RADIUS, new_y + PLAYER_RADIUS) ||
-		is_collision(map, new_x + PLAYER_RADIUS, new_y - PLAYER_RADIUS) ||
-		is_collision(map, new_x - PLAYER_RADIUS, new_y - PLAYER_RADIUS))
-	{
-		return (1);
-	}
-	return (0);
-}
 void	update_vertical_pos(t_map *map, t_player *player, int dir)
 {
 	double	new_pos_x;
