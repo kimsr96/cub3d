@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 09:28:19 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/29 20:29:57 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/09/30 13:51:08 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,18 @@ void	init_image(t_image *img, void *mlx)
 	img->addr = mlx_get_data_addr(img->img, &img->bpp, &img->l, &img->endian);
 }
 
+void	check_leaks(void)
+{
+	system("leaks --list -- cub3D");
+}
+
 int	main(int argc, char **argv)
 {
 	t_game	g;
 
 	if (argc != 2)
 		error_msg();
+	//atexit(check_leaks);
 	ft_memset(&g, 0, sizeof(g));
 	g.mlx = mlx_init();
 	g.win = mlx_new_window(g.mlx, WINDOW_W, WINDOW_H, "cub3d");

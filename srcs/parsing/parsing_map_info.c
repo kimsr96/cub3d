@@ -6,59 +6,11 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 20:22:33 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/29 21:10:37 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/09/30 13:19:40 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-static void	pass_empty_line(int fd, int *map_start)
-{
-	int		i;
-	char	*line;
-
-	i = 0;
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			error_msg();
-		(*map_start)++;
-		i = 0;
-		while (line[i])
-		{
-			if (line[i] != ' ' && line[i] != '\n')
-				break ;
-			i++;
-		}
-		if (line[i] != '\0')
-			break ;
-	}
-	free(line);
-}
-
-void	get_map_info(t_game *g, int fd, int *map_start)
-{	
-	int		idx;
-	int		col;
-	char	*line;
-
-	idx = 0;
-	col = 0;
-	pass_empty_line(fd, map_start);
-	g->map.row = 1;
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		g->map.row++;
-		if ((int)ft_strlen(line) > col)
-			col = (int)ft_strlen(line);
-		free(line);
-	}
-	g->map.col = col - 1;
-}
 
 int	is_empty_line(char *s)
 {

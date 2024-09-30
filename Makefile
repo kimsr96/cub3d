@@ -1,6 +1,6 @@
 CC = cc
- CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
-#CFLAGS = -Wall -Wextra -Werror
+# CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror
 MLX = -Lmlx -lmlx -framework Metal -framework Appkit
 LIBFT = -Llibft -lft
 SRCS =  srcs/main.c \
@@ -11,7 +11,6 @@ SRCS =  srcs/main.c \
 		srcs/draw/update.c \
 		srcs/draw/check_collision.c \
 		srcs/draw/draw.c \
-		srcs/parsing/print.c \
 		srcs/parsing/read_map.c \
 		srcs/parsing/utils.c \
 		srcs/parsing/parsing_file_info.c \

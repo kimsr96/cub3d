@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:24:01 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/29 18:09:22 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/30 13:28:01 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define MOVE_SPEED 0.2
 # define ROTATE_SPEED 0.2
 # define PLAYER_RADIUS 0.1
+
 typedef struct s_image
 {
 	void	*img;
@@ -45,9 +46,9 @@ typedef struct s_image
 
 typedef struct s_asset
 {
-	t_image			texture[4];
-    int				floor_color;
-    int				ceiling_color;
+	int		floor_color;
+	int		ceiling_color;
+	t_image	texture[4];
 }				t_asset;
 
 typedef struct s_map
@@ -75,7 +76,7 @@ typedef struct s_ray
 {
 	int		step_x;
 	int		step_y;
-	int 	map_x;
+	int		map_x;
 	int		map_y;
 	double	raydir_x;
 	double	raydir_y;
@@ -119,13 +120,12 @@ typedef struct s_game
 	t_draw		draw;
 }				t_game;
 
-
 /* parsing_map.c */
 void			get_map_info(t_game *g, int fd, int *map_start);
 void			get_map(t_game *g, char *f_name, int map_start);
 
 /* valid_map.c */
-void			valid_map(t_game *g);
+void			check_valid_map(t_game *g);
 
 /* print.c */
 void			print_player(t_game *g);
@@ -144,6 +144,10 @@ int				pass_line_before_map(char *f_name, int map_start);
 char			*int_to_hex_color(char **color_2d);
 int				combine_color(char **color_2d);
 
+/* ft_free.c */
+void			free_3d_arr(char ***s);
+void			free_2d_arr(char **s);
+
 void			put_pixel_to_image(t_image *image, int x, int y, int color);
 void			init_player(t_map *map, t_player *player);
 void			init_ray(t_map *map, t_ray *ray);
@@ -161,15 +165,18 @@ void			draw_vertical_line(t_game *game, int x, int side);
 void			draw(t_game *game);
 
 int				is_collision(t_map *map, double x, double y);
-int				check_collision_with_radius(t_map *map, double new_x, double new_y);
+int				check_collision_with_radius(t_map *map, \
+											double new_x, double new_y);
 void			update_direction(t_player *player, t_ray *ray, double theta);
 void			update_vertical_pos(t_map *map, t_player *player, int dir);
-void			update_horizontal_pos(t_map *map, t_player *player, t_ray *ray, int dir);
+void			update_horizontal_pos(t_map *map, t_player *player, \
+										t_ray *ray, int dir);
 void			move_player(int keycode, t_game *game);
 void			rotate_player(int keycode, t_game *game);
 
 int				terminate(t_game *game);
-int				handle_keypress(int	keycode, t_game *game);
+int				handle_keypress(int keycode, t_game *game);
+
 /* get_fc_color.c */
 void			count_comma(char *s);
 char			*remove_space(char *s, int idx);

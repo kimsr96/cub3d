@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:45:49 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/29 21:51:52 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/09/30 13:14:58 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,14 @@ void	insert_info(t_game *g, char ***split_line)
 	}
 }
 
-
 int	get_parsing_line(char ***split_line, char *line)
 {
 	int			i;
 	char		*ret;
 	const char	*id[6] = {"NO ", "SO ", "WE ", "EA ", "F ", "C "};
 
-	i = 0;
-	while (i < 6)
+	i = -1;
+	while (++i < 6)
 	{
 		ret = ft_strnstr(line, id[i], ft_strlen(line));
 		if (ret)
@@ -63,12 +62,12 @@ int	get_parsing_line(char ***split_line, char *line)
 				ret = remove_space(line, (int)ft_strlen(id[i]));
 				count_comma(ret);
 				split_line[i] = ft_split2(ret, "\x20\n");
+				free(ret);
 			}
 			else
 				split_line[i] = ft_split2(line, "\x20\n");
 			return (1);
 		}
-		i++;
 	}
 	return (0);
 }
