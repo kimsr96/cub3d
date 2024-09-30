@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_file_info.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:45:49 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/14 21:45:52 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/29 21:51:52 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,14 @@ void	insert_info(t_game *g, char ***split_line)
 			g->asset.texture[i].img = xpmpath_to_img(g->mlx, split_line[i][1]);
 			set_texture(&(g->asset.texture[i]));
 		}
-		else if (i == 4)
+		else if (i == 4 || i == 5)
 		{
-			color_2d = ft_split(split_line[4][1], ',');
-			g->asset.floor_color = combine_color(color_2d);
-		}
-		else if (i == 5)
-		{
-			color_2d = ft_split(split_line[5][1], ',');
-			g->asset.ceiling_color = combine_color(color_2d);
+			color_2d = ft_split(split_line[i][1], ',');
+			if (i == 4)
+				g->asset.floor_color = combine_color(color_2d);
+			else if (i == 5)
+				g->asset.ceiling_color = combine_color(color_2d);
+			free_2d_arr(color_2d);
 		}
 		i++;
 	}
@@ -48,7 +47,7 @@ void	insert_info(t_game *g, char ***split_line)
 int	get_parsing_line(char ***split_line, char *line)
 {
 	int			i;
-	char 		*ret;
+	char		*ret;
 	const char	*id[6] = {"NO ", "SO ", "WE ", "EA ", "F ", "C "};
 
 	i = 0;
@@ -61,10 +60,12 @@ int	get_parsing_line(char ***split_line, char *line)
 				error_msg();
 			if (i >= 4)
 			{
-				line = remove_space(line, (int)ft_strlen(id[i]));
-				count_comma(line);
+				ret = remove_space(line, (int)ft_strlen(id[i]));
+				count_comma(ret);
+				split_line[i] = ft_split2(ret, "\x20\n");
 			}
-			split_line[i] = ft_split2(line, "\x20\n");
+			else
+				split_line[i] = ft_split2(line, "\x20\n");
 			return (1);
 		}
 		i++;
@@ -87,7 +88,7 @@ void	get_texture(t_game *g, char ***split_line, int fd, int *map_start)
 			error_msg();
 		(*map_start)++;
 		if (ft_strlen(line) && num < 6)
-			num += get_parsing_line(split_line, ft_strdup(line));
+			num += get_parsing_line(split_line, line);
 		free(line);
 		if (num == 6)
 			break ;
@@ -104,15 +105,17 @@ void	get_info(t_game *g, char *f_name)
 	char	***split_line;
 
 	map_start = 0;
-	split_line = malloc(sizeof(char **) * 6);
+	split_line = malloc(sizeof(char **) * 7);
 	if (!split_line)
 		exit(1);
-	ft_memset(split_line, 0, sizeof(char **) * 6);
+	split_line[6] = NULL;
+	ft_memset(split_line, 0, sizeof(char **) * 7);
 	fd = open(f_name, O_RDONLY);
 	if (fd < 0)
 		error_msg();
 	get_texture(g, split_line, fd, &map_start);
 	get_map_info(g, fd, &map_start);
+	free_3d_arr(split_line);
 	close(fd);
 	get_map(g, f_name, map_start);
 }

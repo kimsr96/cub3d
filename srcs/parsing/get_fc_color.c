@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 20:04:27 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/30 21:45:35 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/09/29 21:51:53 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ char	*remove_space(char *s, int idx)
 
 	i = 0;
 	len = len_without_space(&s[idx]);
-	if (len == (int)ft_strlen(&s[idx]))
-		return (s);
+	//if (len == (int)ft_strlen(&s[idx]))
+	//	return (s);
 	ret = malloc(sizeof(char) * (len + idx));
 	ret[len + idx - 1] = '\0';
 	i = 0;
@@ -68,7 +68,5 @@ char	*remove_space(char *s, int idx)
 			ret[j++] = s[i];
 		i++;
 	}
-	free(s);
-	s = ret;
-	return (s);
+	return (ret);
 }

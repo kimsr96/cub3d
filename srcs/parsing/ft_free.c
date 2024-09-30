@@ -1,44 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_map.c                                         :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/24 15:32:03 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/29 20:23:37 by seungryk         ###   ########.fr       */
+/*   Created: 2024/09/29 20:39:50 by seungryk          #+#    #+#             */
+/*   Updated: 2024/09/29 21:07:09 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-
-
-static void	check_type(char *file_name)
+void	free_3d_arr(char ***s)
 {
-	int		i;
-	size_t	len;
+	int	i;
+	int	j;
 
 	i = 0;
-	while (file_name[i])
+	while (s[i])
 	{
-		if (file_name[i + 1] == '.' && file_name[i] != '/')
+		j = 0;
+		while (s[i][j])
 		{
-			len = ft_strlen(&file_name[i + 1]);
-			if (!ft_memcmp(&file_name[i + 1], ".cub", len))
-				return ;
+			free(s[i][j]);
+			s[i][j] = NULL;
+			j++;
 		}
+		free(s[i]);
+		s[i] = NULL;
 		i++;
 	}
-	error_msg();
+	free(s);
 }
 
-void	read_map(t_game *g, char *f_name)
+void	free_2d_arr(char **s)
 {
-	check_type(f_name);
-    get_info(g, f_name);
-	check_valid_map(g);
-	// print_map(g);
-	// print_player(g);
-	//check_map(g);
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		free(s[i]);
+		s[i] = NULL;
+		i++;
+	}
+	free(s);
 }

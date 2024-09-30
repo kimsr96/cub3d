@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_map_info.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 20:22:33 by seungryk          #+#    #+#             */
-/*   Updated: 2024/08/30 21:57:37 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/09/29 21:10:37 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static void	pass_empty_line(int fd, int *map_start)
 		if (line[i] != '\0')
 			break ;
 	}
+	free(line);
 }
 
 void	get_map_info(t_game *g, int fd, int *map_start)
@@ -71,6 +72,7 @@ int	is_empty_line(char *s)
 		else
 			return (0);
 	}
+	free(s);
 	return (1);
 }
 
@@ -86,17 +88,15 @@ void	insert_to_2darr(int fd, t_game *g)
 		line = get_next_line(fd);
 		if (!line || is_empty_line(line))
 			break ;
-		x = 0;
-		while (line[x] && line[x] != '\n')
-		{
+		x = -1;
+		while (line[++x] && line[x] != '\n')
 			g->map.map_2d[y][x] = line[x];
-			x++;
-		}
 		while (x < g->map.col)
 		{
 			g->map.map_2d[y][x] = ' ';
 			x++;
 		}
+		free(line);
 		y++;
 	}
 }
@@ -115,9 +115,13 @@ void	pass_left_line(int fd)
 		while (line[i])
 		{
 			if (line[i] != ' ' && line[i] != '\n')
+			{
+				free(line);
 				error_msg();
+			}
 			i++;
 		}
+		free(line);
 	}
 }
 
