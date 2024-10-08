@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/06 16:07:56 by hyeonble          #+#    #+#             */
-/*   Updated: 2024/09/29 18:11:41 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/10/08 21:18:10 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	init_player(t_map *map, t_player *player)
 {
-	player->pos_x = (double)map->player_x;
-	player->pos_y = (double)map->player_y;
+	player->pos_x = (double)map->player_x + 0.5;
+	player->pos_y = (double)map->player_y + 0.5;
 	if (map->player_dir == 'N')
 	{
 		player->dir_x = 0.0;
