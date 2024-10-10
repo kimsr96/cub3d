@@ -1,5 +1,4 @@
 CC = cc
-# CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
 CFLAGS = -Wall -Wextra -Werror
 MLX = -Lmlx -lmlx -framework Metal -framework Appkit
 LIBFT = -Llibft -lft

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/09 09:28:19 by seungryk          #+#    #+#             */
-/*   Updated: 2024/10/08 21:18:14 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:25:46 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,12 @@ void	init_image(t_image *img, void *mlx)
 	img->addr = mlx_get_data_addr(img->img, &img->bpp, &img->l, &img->endian);
 }
 
-void	check_leaks(void)
-{
-	system("leaks --list -- cub3D");
-}
-
 int	main(int argc, char **argv)
 {
 	t_game	g;
 
 	if (argc != 2)
 		error_msg();
-	//atexit(check_leaks);
 	ft_memset(&g, 0, sizeof(g));
 	g.mlx = mlx_init();
 	g.win = mlx_new_window(g.mlx, WINDOW_W, WINDOW_H, "cub3d");

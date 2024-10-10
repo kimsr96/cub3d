@@ -6,7 +6,7 @@
 /*   By: seungryk <seungryk@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/24 15:32:03 by seungryk          #+#    #+#             */
-/*   Updated: 2024/09/30 13:20:20 by seungryk         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:20:27 by seungryk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static void	check_type(char *file_name)
 		if (file_name[i + 1] == '.' && file_name[i] != '/')
 		{
 			len = ft_strlen(&file_name[i + 1]);
-			if (!ft_memcmp(&file_name[i + 1], ".cub", len))
+			if (!ft_memcmp(&file_name[i + 1], ".cub", len) \
+								&& len >= ft_strlen(".cub"))
 				return ;
 		}
 		i++;
