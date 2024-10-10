@@ -6,7 +6,7 @@
 /*   By: hyeonble <hyeonble@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/27 14:41:40 by hyeonble          #+#    #+#             */
-/*   Updated: 2024/09/29 18:07:39 by hyeonble         ###   ########.fr       */
+/*   Updated: 2024/10/10 19:39:44 by hyeonble         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,15 @@ int	select_texture(t_game *game, int side)
 	if (side == WALL_X)
 	{
 		if (game->ray.raydir_x > 0)
-			return (3);
-		else
 			return (2);
+		else
+			return (3);
 	}
 	else
 	{
 		if (game->ray.raydir_y > 0)
-			return (1);
-		else
 			return (0);
+		else
+			return (1);
 	}
 }
